@@ -1,0 +1,25 @@
+name: hiper_spectro
+description: "O HiperSpectro é um aplicativo educacional desenvolvido para estudantes e professores de Química, permitindo a simulação interativa de experimentos de espectrofotometria. O app possibilita visualizar, em tempo real, como a absorbância de uma substância varia com o tempo e a temperatura, utilizando dados experimentais reais ou simulações baseadas em padrões científicos."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  firebase_core: ^2.32.0
+  cloud_firestore: ^4.17.5
+  fl_chart: ^0.60.0
+  provider: ^6.0.6
+  flutter_svg: ^2.1.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
