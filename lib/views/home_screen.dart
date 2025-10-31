@@ -71,7 +71,8 @@ class HomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: SizedBox(
                   width: double.infinity,
                   height: 48,

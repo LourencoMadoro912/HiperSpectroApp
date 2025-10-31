@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'simulated_screen.dart';
 
 class SimulationScreen extends StatefulWidget {
   const SimulationScreen({super.key});
@@ -23,135 +24,84 @@ class _SimulationScreenState extends State<SimulationScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // ---------- Cabeçalho ----------
             Container(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              color: isDark ? const Color(0xFF101622) : const Color(0xFFF6F6F8),
+              color:
+              isDark ? const Color(0xFF101622) : const Color(0xFFF6F6F8),
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
                       );
                     },
                     child: Icon(Icons.arrow_back,
                         color: isDark ? Colors.white70 : Colors.black87),
                   ),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        'Configurar Simulação',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
+                  const Spacer(),
+                  Text(
+                    'Configurar Simulação',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black,
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  const Spacer(),
                 ],
               ),
             ),
+
+            // ---------- Corpo ----------
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 12),
-                      child: Text(
-                        'Temperatura (°C)',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                    const Text(
+                      'Temperatura (°C)',
+                      style:
+                      TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _temperatureController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Insira a temperatura',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                    ),
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 480),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Valor',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500)),
-                          const SizedBox(height: 8),
-                          TextField(
-                            controller: _temperatureController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: 'Insira a temperatura',
-                              filled: true,
-                              fillColor:
-                              isDark ? const Color(0xFF1A1C2B) : Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: isDark
-                                      ? Colors.grey.shade700
-                                      : Colors.grey.shade300,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 2),
-                              ),
-                              contentPadding: const EdgeInsets.all(15),
-                            ),
-                            style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                              fontSize: 16,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedTemperature =
-                                    int.tryParse(value) ?? 25;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedTemperature = int.tryParse(value) ?? 25;
+                        });
+                      },
                     ),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,
-                      runSpacing: 8,
                       children: _suggestedTemperatures.map((temp) {
-                        final isSelected = _selectedTemperature == temp;
                         return ChoiceChip(
                           label: Text('$temp°C'),
-                          selected: isSelected,
+                          selected: _selectedTemperature == temp,
                           onSelected: (_) {
                             setState(() {
                               _selectedTemperature = temp;
                               _temperatureController.text = temp.toString();
                             });
                           },
-                          selectedColor: isDark
-                              ? Colors.blue.withOpacity(0.3)
-                              : Colors.blue.withOpacity(0.2),
-                          backgroundColor: isDark
-                              ? Colors.grey.shade700.withOpacity(0.8)
-                              : Colors.grey.shade200,
-                          labelStyle: TextStyle(
-                            color: isSelected
-                                ? (isDark
-                                ? Colors.lightBlue[200]
-                                : Colors.blue)
-                                : (isDark
-                                ? Colors.white70
-                                : Colors.black87),
-                            fontWeight: FontWeight.w500,
-                          ),
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 40),
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -161,24 +111,17 @@ class _SimulationScreenState extends State<SimulationScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.lightbulb,
-                              color: isDark
-                                  ? Colors.lightBlue[200]
-                                  : Colors.blue,
-                              size: 28),
-                          const SizedBox(width: 12),
-                          const Expanded(
+                        children: const [
+                          Icon(Icons.lightbulb, color: Colors.blue),
+                          SizedBox(width: 12),
+                          Expanded(
                             child: Text(
                               'A temperatura influencia a velocidade da reação enzimática e, portanto, a absorbância.',
-                              style: TextStyle(fontSize: 14),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -186,32 +129,24 @@ class _SimulationScreenState extends State<SimulationScreen> {
           ],
         ),
       ),
-      bottomSheet: Container(
+      bottomSheet: Padding(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF101622) : const Color(0xFFF6F6F8),
-          border: Border(
-            top: BorderSide(
-                color: isDark ? Colors.grey.shade800 : Colors.grey.shade200),
-          ),
-        ),
         child: SizedBox(
           width: double.infinity,
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              final temp = _temperatureController.text;
-              print('Gerar gráfico para $temp °C');
+              final temp = int.tryParse(_temperatureController.text) ?? 25;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SimulatedScreen(temperature: temp),
+                ),
+              );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
             child: const Text(
               'Gerar Gráfico',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         ),
