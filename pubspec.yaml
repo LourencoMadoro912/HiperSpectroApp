@@ -34,5 +34,5 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/projecto_flutter_imagem.png"
+  image_path: "assets/hiper_spectro_icon_full_screen.png"
 

@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white, // muda a cor se quiser
       body: Center(
         child: Image.asset(
-          'assets/splash.projecto_flutter_imagem.png',
+          'assets/splash.hiper_spectro_spash_screen.png',
           width: 200, // ajusta o tamanho conforme quiser
           height: 200,
           fit: BoxFit.contain,
