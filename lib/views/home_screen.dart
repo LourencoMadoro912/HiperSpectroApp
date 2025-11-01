@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'input_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,12 +28,11 @@ class HomeScreen extends StatelessWidget {
                     width: 112,
                     height: 112,
                     decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          "https://lh3.googleusercontent.com/aida-public/AB6AXuDAO2ks2cddh28iNYk1VgUkwRq9MgBRSIutRVqdZtFgiSDZcSiKKr4rgUR-v7Q1jhec7oqxIj8HrTbyAOeCXJVZ1zF2HVt-jmbrliDGDXMX6K-hDCcGksp98jvNLvLpU-xEFZ0noFAqtt1KKEvqWhLuPRocdZN-D2B-Bnlq3GrFi45zC3t8IfIZ5iJKAfIXPkHCU5kK1A1PGOyr_2By4EYQzKV2oRE6u8dnhv3hImHdSffUVQjY4DL6ptTBrQH0TKdJKyl1yK76hfFj",
-                        ),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/projecto_flutter_imagem.png"),
                         fit: BoxFit.contain,
                       ),
+
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -78,10 +78,24 @@ class HomeScreen extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/input');
+                      Navigator.of(context).push(PageRouteBuilder(
+                        transitionDuration:
+                        const Duration(milliseconds: 600),
+                        pageBuilder: (_, __, ___) => const InputScreen(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          final tween = Tween(
+                              begin: const Offset(1, 0), end: Offset.zero)
+                              .chain(
+                              CurveTween(curve: Curves.easeInOutCubicEmphasized));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF135BEC),
+                      backgroundColor: const Color(0xFF0D47A1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -91,6 +105,7 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ),

@@ -16,6 +16,7 @@ dependencies:
   provider: ^6.0.6
   google_fonts: ^6.2.1
   flutter_svg: ^2.1.6
+  flutter_launcher_icons: ^0.14.4
 
 
 
@@ -27,3 +28,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/projecto_flutter_imagem.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/projecto_flutter_imagem.png"
+

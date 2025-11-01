@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'summary_screen.dart';
 
 class SimulatedScreen extends StatelessWidget {
   final int temperature;
@@ -165,6 +166,13 @@ class SimulatedScreen extends StatelessWidget {
                             barWidth: 2,
                             dotData: const FlDotData(show: false),
                           ),
+                          LineChartBarData(
+                            spots: _generateData(0.03),
+                            isCurved: true,
+                            color: Colors.green,
+                            barWidth: 2,
+                            dotData: const FlDotData(show: false),
+                          ),
                         ],
                       ),
                     ),
@@ -185,6 +193,7 @@ class SimulatedScreen extends StatelessWidget {
                     spacing: 20,
                     runSpacing: 8,
                     children: const [
+                      _LegendItem(color: Colors.green, label: "5 °C"),
                       _LegendItem(color: Colors.blue, label: "25 °C"),
                       _LegendItem(color: Colors.orange, label: "30 °C"),
                       _LegendItem(color: Colors.red, label: "40 °C"),
@@ -251,10 +260,30 @@ class SimulatedScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.of(context).push(PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 600),
+                    pageBuilder: (_, __, ___) => SummaryScreen(
+                      temperature: temperature,
+                      absorbance: 0.85,
+                      totalTime: '10 min',
+                    ),
+                    transitionsBuilder: (_, animation, __, child) {
+                      final tween = Tween(
+                          begin: const Offset(1, 0), end: Offset.zero)
+                          .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized));
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ));
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF135BEC),
-                  shape: const StadiumBorder(),
+                  backgroundColor: const Color(0xFF0D47A1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 16,
@@ -264,7 +293,8 @@ class SimulatedScreen extends StatelessWidget {
                   "Ver Resultados",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 16,
+                    color: Colors.white,
                   ),
                 ),
               ),

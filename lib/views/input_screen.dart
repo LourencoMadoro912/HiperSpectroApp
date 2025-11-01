@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
 import 'simulated_screen.dart';
 
-class SimulationScreen extends StatefulWidget {
-  const SimulationScreen({super.key});
+class InputScreen extends StatefulWidget {
+  const InputScreen({super.key});
 
   @override
-  State<SimulationScreen> createState() => _SimulationScreenState();
+  State<InputScreen> createState() => _InputScreenState();
 }
 
-class _SimulationScreenState extends State<SimulationScreen> {
+class _InputScreenState extends State<InputScreen> {
   final TextEditingController _temperatureController =
-  TextEditingController(text: "25");
+  TextEditingController(text: "5");
 
-  final List<int> _suggestedTemperatures = [25, 30, 40];
-  int _selectedTemperature = 25;
+  final List<int> _suggestedTemperatures = [5, 25, 30, 40];
+  int _selectedTemperature = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class _SimulationScreenState extends State<SimulationScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ---------- Cabeçalho ----------
             Container(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               color:
@@ -32,13 +30,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                      );
-                    },
+                    onTap: () => Navigator.pop(context),
                     child: Icon(Icons.arrow_back,
                         color: isDark ? Colors.white70 : Colors.black87),
                   ),
@@ -55,8 +47,6 @@ class _SimulationScreenState extends State<SimulationScreen> {
                 ],
               ),
             ),
-
-            // ---------- Corpo ----------
             Expanded(
               child: SingleChildScrollView(
                 padding:
@@ -81,7 +71,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          _selectedTemperature = int.tryParse(value) ?? 25;
+                          _selectedTemperature = int.tryParse(value) ?? 5;
                         });
                       },
                     ),
@@ -101,27 +91,6 @@ class _SimulationScreenState extends State<SimulationScreen> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 40),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? Colors.blue.withOpacity(0.2)
-                            : Colors.blue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.lightbulb, color: Colors.blue),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'A temperatura influencia a velocidade da reação enzimática e, portanto, a absorbância.',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -136,17 +105,36 @@ class _SimulationScreenState extends State<SimulationScreen> {
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              final temp = int.tryParse(_temperatureController.text) ?? 25;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SimulatedScreen(temperature: temp),
-                ),
-              );
+              final temp = int.tryParse(_temperatureController.text) ?? 5;
+              Navigator.of(context).push(PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 600),
+                pageBuilder: (_, __, ___) => SimulatedScreen(temperature: temp),
+                transitionsBuilder: (_, animation, __, child) {
+                  final tween = Tween(
+                      begin: const Offset(0, 1), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.easeInOut));
+                  return SlideTransition(
+                      position: animation.drive(tween), child: child);
+                },
+              ));
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF0D47A1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 16,
+              ),
+            ),
             child: const Text(
               'Gerar Gráfico',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

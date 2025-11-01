@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'views/home_screen.dart';
 import 'views/input_screen.dart';
 import 'views/simulated_screen.dart';
+import 'views/summary_screen.dart';
+import 'views/splash_screen.dart';
 
 void main() {
   runApp(const HiperSpectroApp());
@@ -27,10 +29,13 @@ class HiperSpectroApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/',
+
+      // 🚀 Rota inicial será a SplashScreen
+      initialRoute: '/splash',
       routes: {
-        '/': (context) => const HomeScreen(),
-        '/input': (context) => const SimulationScreen(),
+        '/splash': (context) => const SplashScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/input': (context) => const InputScreen(),
       },
     );
   }
