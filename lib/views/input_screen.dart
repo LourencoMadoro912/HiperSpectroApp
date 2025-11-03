@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../viewmodels/simulation_viewmodel.dart';
 import 'simulated_screen.dart';
 
 class InputScreen extends StatefulWidget {
@@ -10,14 +13,15 @@ class InputScreen extends StatefulWidget {
 
 class _InputScreenState extends State<InputScreen> {
   final TextEditingController _temperatureController =
-  TextEditingController(text: "5");
+  TextEditingController(text: "25");
 
   final List<int> _suggestedTemperatures = [5, 25, 30, 40];
-  int _selectedTemperature = 5;
+  int _selectedTemperature = 25;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final vm = Provider.of<SimulationViewModel>(context, listen: false);
 
     return Scaffold(
       body: SafeArea(
@@ -25,8 +29,7 @@ class _InputScreenState extends State<InputScreen> {
           children: [
             Container(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              color:
-              isDark ? const Color(0xFF101622) : const Color(0xFFF6F6F8),
+              color: isDark ? const Color(0xFF101622) : const Color(0xFFF6F6F8),
               child: Row(
                 children: [
                   GestureDetector(
@@ -71,7 +74,7 @@ class _InputScreenState extends State<InputScreen> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          _selectedTemperature = int.tryParse(value) ?? 5;
+                          _selectedTemperature = int.tryParse(value) ?? 25;
                         });
                       },
                     ),
@@ -91,6 +94,11 @@ class _InputScreenState extends State<InputScreen> {
                         );
                       }).toList(),
                     ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Dica: temperaturas mais altas geralmente aceleram reações (maior taxa k).',
+                      style: TextStyle(fontSize: 14),
+                    ),
                   ],
                 ),
               ),
@@ -105,16 +113,17 @@ class _InputScreenState extends State<InputScreen> {
           height: 56,
           child: ElevatedButton(
             onPressed: () {
-              final temp = int.tryParse(_temperatureController.text) ?? 5;
+              final temp = int.tryParse(_temperatureController.text) ?? 25;
+              // Gera os dados na ViewModel antes de navegar
+              vm.generateSimulation(temperatureC: temp, durationSeconds: 120, pointsCount: 61);
+
               Navigator.of(context).push(PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 600),
                 pageBuilder: (_, __, ___) => SimulatedScreen(temperature: temp),
                 transitionsBuilder: (_, animation, __, child) {
-                  final tween = Tween(
-                      begin: const Offset(0, 1), end: Offset.zero)
+                  final tween = Tween(begin: const Offset(0, 1), end: Offset.zero)
                       .chain(CurveTween(curve: Curves.easeInOut));
-                  return SlideTransition(
-                      position: animation.drive(tween), child: child);
+                  return SlideTransition(position: animation.drive(tween), child: child);
                 },
               ));
             },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'input_screen.dart';
+import 'history_screen.dart';
 
 class SummaryScreen extends StatelessWidget {
   final int temperature;
@@ -25,7 +26,7 @@ class SummaryScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // App bar personalizada
+            // 🔹 Top bar personalizada com botão de exclamação
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               color: isDark ? const Color(0xFF101622) : Colors.white,
@@ -44,11 +45,39 @@ class SummaryScreen extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  const Spacer(flex: 2),
+                  const Spacer(),
+                  // 🔸 Ícone de exclamação no canto superior direito
+                  PopupMenuButton<String>(
+                    icon: Icon(Icons.priority_high, color: Colors.orange[800]),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'historico',
+                        child: Row(
+                          children: const [
+                            Icon(Icons.history, color: Colors.teal),
+                            SizedBox(width: 8),
+                            Text("Ver histórico salvo"),
+                          ],
+                        ),
+                      ),
+                    ],
+                    onSelected: (value) {
+                      if (value == 'historico') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
 
+            // 🔹 Corpo principal
             Expanded(
               child: SingleChildScrollView(
                 padding:
@@ -101,6 +130,7 @@ class SummaryScreen extends StatelessWidget {
               ),
             ),
 
+            // 🔹 Botões de ação na parte inferior
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

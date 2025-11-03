@@ -28,11 +28,10 @@ class HomeScreen extends StatelessWidget {
                     width: 112,
                     height: 112,
                     decoration: const BoxDecoration(
-                      image: const DecorationImage(
+                      image: DecorationImage(
                         image: AssetImage("assets/projecto_flutter_imagem.png"),
                         fit: BoxFit.contain,
                       ),
-
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -78,21 +77,23 @@ class HomeScreen extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                        transitionDuration:
-                        const Duration(milliseconds: 600),
-                        pageBuilder: (_, __, ___) => const InputScreen(),
-                        transitionsBuilder: (_, animation, __, child) {
-                          final tween = Tween(
-                              begin: const Offset(1, 0), end: Offset.zero)
-                              .chain(
-                              CurveTween(curve: Curves.easeInOutCubicEmphasized));
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ));
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          transitionDuration:
+                          const Duration(milliseconds: 600),
+                          pageBuilder: (_, __, ___) => const InputScreen(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            final tween =
+                            Tween(begin: const Offset(1, 0), end: Offset.zero)
+                                .chain(CurveTween(
+                                curve: Curves.easeInOutCubicEmphasized));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0D47A1),
